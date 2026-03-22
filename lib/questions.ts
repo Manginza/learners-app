@@ -1,136 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Learner's Licence Image Manager</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--primary:#1a73e8;--primary-dark:#1557b0;--success:#34a853;--danger:#ea4335;--bg:#f8f9fa;--card:#fff;--text:#202124;--text-light:#5f6368;--border:#dadce0;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.08)}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* Login */
-.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
-.login-card{background:var(--card);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);max-width:400px;width:100%}
-.login-card h1{font-size:24px;margin-bottom:4px;text-align:center}
-.login-card p{color:var(--text-light);text-align:center;margin-bottom:24px;font-size:14px}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:var(--text-light)}
-.form-group input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-size:15px;outline:none;transition:border-color .15s}
-.form-group input:focus{border-color:var(--primary)}
-.btn{padding:10px 20px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;width:100%}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-dark)}
-.btn-danger{background:var(--danger);color:#fff;width:auto;padding:6px 12px;font-size:12px}
-.btn-danger:hover{opacity:.9}
-.error-msg{color:var(--danger);font-size:13px;margin-top:8px;text-align:center;display:none}
-
-/* Admin Panel */
-.admin-panel{display:none}
-.admin-header{background:var(--card);box-shadow:var(--shadow);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.admin-header h1{font-size:18px}
-.admin-header .user-info{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-light)}
-.btn-logout{background:none;border:1px solid var(--border);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px}
-.btn-logout:hover{background:var(--bg)}
-
-.admin-content{max-width:1000px;margin:0 auto;padding:24px 16px}
-.admin-tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:0}
-.tab-btn{padding:10px 20px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-light);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
-.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab-btn:hover{color:var(--text)}
-
-/* Question List */
-.question-list{display:flex;flex-direction:column;gap:12px}
-.q-item{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:flex-start}
-.q-item-num{background:var(--primary);color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
-.q-item-content{flex:1;min-width:0}
-.q-item-text{font-size:14px;margin-bottom:8px;line-height:1.5;white-space:pre-line}
-.q-item-image{margin-top:8px}
-.q-item-image img{max-width:200px;max-height:150px;border-radius:8px;border:1px solid var(--border);object-fit:contain}
-.q-item-actions{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
-.upload-area{display:flex;align-items:center;gap:8px}
-.upload-area input[type="file"]{font-size:12px;max-width:200px}
-.btn-upload{background:var(--success);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
-.btn-upload:hover{opacity:.9}
-.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
-.badge-has-img{background:#e6f4ea;color:#137333}
-.badge-no-img{background:#f1f3f4;color:#5f6368}
-.upload-status{font-size:12px;margin-top:4px}
-.upload-status.success{color:var(--success)}
-.upload-status.error{color:var(--danger)}
-
-/* Search & Filter */
-.toolbar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.search-input{flex:1;min-width:200px;padding:8px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;outline:none}
-.search-input:focus{border-color:var(--primary)}
-.filter-select{padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:var(--card)}
-.stats{font-size:13px;color:var(--text-light);margin-bottom:12px}
-
-@media(max-width:600px){
-  .q-item{flex-direction:column}
-  .admin-header{padding:10px 16px}
-  .admin-header h1{font-size:15px}
-  .toolbar{flex-direction:column}
-  .search-input{min-width:100%}
+export interface Question {
+  q: string
+  o: string[]
+  a: number
 }
-</style>
-</head>
-<body>
 
-<!-- Login Screen -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <h1>Admin Login</h1>
-    <p>Sign in to manage question images</p>
-    <form onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="loginEmail" required autocomplete="email" placeholder="admin@example.com">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Enter password">
-      </div>
-      <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
-      <div class="error-msg" id="loginError"></div>
-    </form>
-  </div>
-</div>
-
-<!-- Admin Panel -->
-<div class="admin-panel" id="adminPanel">
-  <div class="admin-header">
-    <h1>Image Manager</h1>
-    <div class="user-info">
-      <span id="adminEmail"></span>
-      <button class="btn-logout" onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-  <div class="admin-content">
-    <div class="admin-tabs">
-      <button class="tab-btn active" onclick="switchTab('code8',this)">Code 8</button>
-      <button class="tab-btn" onclick="switchTab('code10',this)">Code 10</button>
-      <button class="tab-btn" onclick="switchTab('code14',this)">Code 14</button>
-    </div>
-
-    <div class="toolbar">
-      <input type="text" class="search-input" id="searchInput" placeholder="Search questions..." oninput="renderQuestions()">
-      <select class="filter-select" id="filterSelect" onchange="renderQuestions()">
-        <option value="all">All Questions</option>
-        <option value="with-image">With Image</option>
-        <option value="no-image">Without Image</option>
-      </select>
-    </div>
-
-    <div class="stats" id="statsText"></div>
-    <div class="question-list" id="questionList"></div>
-  </div>
-</div>
-
-<script>
-// Question data (same as index.html)
-const code8Questions = [
+export const code8Questions: Question[] = [
   {q:"When you see a road worker with one arm raised and holding a red flag, you must:", o:["Proceed with caution","Stop","Turn back"], a:1},
   {q:"What does this road sign warn you of? (Sign showing truck on declining slope)", o:["Heavy motor vehicles that might be moving slow on a declining slope ahead","A stopped heavy motor vehicle ahead","An accident ahead involving light and heavy motor vehicles"], a:0},
   {q:"If you want to turn left with your vehicle, you must:", o:["Slow down completely, stop, and then turn","Give the necessary signal in good time","First move to the right to enable you to turn left easily"], a:1},
@@ -191,9 +65,9 @@ const code8Questions = [
   {q:"The background of temporary signs is usually:", o:["Black","White","Yellow"], a:2},
   {q:"Which is ALLOWED when towing another vehicle?\n(i) A motor car tows another motor car with a rope and drives 40 km/h\n(ii) You tow another vehicle with a tow-bar\n(iii) A tractor tows a trailer with 10 passengers on it at a speed of 30 km/h", o:["All of the above are correct","(ii) and (iii) are only correct","(i) only is correct"], a:1},
   {q:"The maximum distance between two vehicles which are being towed is:", o:["2.5m","3.5m","1.8m"], a:1}
-];
+]
 
-const code10Questions = [
+export const code10Questions: Question[] = [
   {q:"What does this road sign indicate? (Yellow diamond priority sign)", o:["That you have the right of way at the next intersection","That there is a danger ahead","That you do not have the right of way at the next intersection"], a:0},
   {q:"If you want to change lanes you must:", o:["Give the necessary signal and after looking for other traffic, change lanes","Switch on your indicator and change lanes","Apply the brakes lightly and then change lanes"], a:0},
   {q:"You may cross or enter a public road:", o:["If the road is clear of traffic for a short distance","If the road is clear of traffic for a long distance and it can be done without obstructing traffic","In any manner as long as you use your indicators in time"], a:1},
@@ -254,9 +128,9 @@ const code10Questions = [
   {q:"How far behind a vehicle must the warning triangle be placed if your vehicle breaks down?", o:["At least 45m","At least 10m","At least 100m"], a:0},
   {q:"What is the longest period that a vehicle may be parked on one place on a public road in urban areas?", o:["48 hours","24 hours","7 days"], a:1},
   {q:"The maximum distance between two vehicles being towed is:", o:["2.5m","3.5m","1.8m"], a:1}
-];
+]
 
-const code14Questions = [
+export const code14Questions: Question[] = [
   {q:"This road sign shows that if you are driving a vehicle carrying hazardous products:", o:["You are not allowed to drive there","You may not stop there","You must stop there"], a:0},
   {q:"What must you use to shift from one gear to another gear?", o:["Foot brake and gear lever","Parking brake and the clutch pedal","Gear lever and the clutch pedal"], a:2},
   {q:"This road marking (double barrier lines) indicates to the road user:", o:["Not to stop on the marking or cross it when overtaking","That he/she may stop there to drop off passengers","That the lines may be crossed in order to overtake another vehicle"], a:0},
@@ -317,193 +191,12 @@ const code14Questions = [
   {q:"At an intersection:", o:["You can use a stop sign as a yield sign if there is no other traffic","Vehicles have the right of way over pedestrians","You must yield to on-coming traffic if you want to turn right"], a:2},
   {q:"Which rule is considered the most important RULE OF THE ROAD in South Africa?", o:["Always be courteous and considerate towards fellow road users","Do not exceed the speed limit","Keep to the left side of the road as far as is safe"], a:2},
   {q:"Which controls must you use when there is a sharp turn?", o:["3, 6, 5, 9 and 8 only","3, 6, 5, 9 and 10 only","1, 3, 6, 5, 9 and 10 only"], a:2}
-];
+]
 
-const allQuestions = { code8: code8Questions, code10: code10Questions, code14: code14Questions };
-
-// State
-let token = localStorage.getItem('admin_token') || null;
-let currentTab = 'code8';
-let imageData = {};
-
-// Init
-window.addEventListener('DOMContentLoaded', () => {
-  if (token) {
-    verifyToken();
-  }
-});
-
-async function verifyToken() {
-  try {
-    const res = await fetch('/api/me', { headers: { Authorization: `Bearer ${token}` } });
-    if (res.ok) {
-      const data = await res.json();
-      showAdmin(data.email);
-    } else {
-      token = null;
-      localStorage.removeItem('admin_token');
-    }
-  } catch { /* stay on login */ }
+export const allQuestions = {
+  code8: code8Questions,
+  code10: code10Questions,
+  code14: code14Questions
 }
 
-async function handleLogin(e) {
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-  const errEl = document.getElementById('loginError');
-
-  try {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      token = data.token;
-      localStorage.setItem('admin_token', token);
-      showAdmin(data.email);
-    } else {
-      errEl.textContent = data.error || 'Login failed';
-      errEl.style.display = 'block';
-    }
-  } catch {
-    errEl.textContent = 'Connection error';
-    errEl.style.display = 'block';
-  }
-}
-
-function showAdmin(email) {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('adminPanel').style.display = 'block';
-  document.getElementById('adminEmail').textContent = email;
-  loadImages();
-}
-
-function logout() {
-  token = null;
-  localStorage.removeItem('admin_token');
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('adminPanel').style.display = 'none';
-}
-
-async function loadImages() {
-  try {
-    const res = await fetch('/api/images');
-    imageData = await res.json();
-  } catch { imageData = {}; }
-  renderQuestions();
-}
-
-function switchTab(tab, btn) {
-  currentTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('searchInput').value = '';
-  document.getElementById('filterSelect').value = 'all';
-  renderQuestions();
-}
-
-function renderQuestions() {
-  const qs = allQuestions[currentTab];
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const filter = document.getElementById('filterSelect').value;
-  const list = document.getElementById('questionList');
-
-  let withImg = 0, total = qs.length;
-  qs.forEach((_, i) => { if (imageData[`${currentTab}_${i}`]) withImg++; });
-  document.getElementById('statsText').textContent = `${withImg} of ${total} questions have images`;
-
-  let html = '';
-  qs.forEach((q, i) => {
-    const key = `${currentTab}_${i}`;
-    const hasImage = !!imageData[key];
-
-    if (filter === 'with-image' && !hasImage) return;
-    if (filter === 'no-image' && hasImage) return;
-    if (search && !q.q.toLowerCase().includes(search)) return;
-
-    const imgHtml = hasImage
-      ? `<div class="q-item-image">
-           <img src="${imageData[key].url}" alt="Question ${i+1} image">
-         </div>`
-      : '';
-
-    const statusBadge = hasImage
-      ? '<span class="badge badge-has-img">Has Image</span>'
-      : '<span class="badge badge-no-img">No Image</span>';
-
-    html += `<div class="q-item" id="q-item-${i}">
-      <div class="q-item-num">${i + 1}</div>
-      <div class="q-item-content">
-        <div class="q-item-text">${q.q.replace(/\n/g, '<br>')}</div>
-        ${statusBadge}
-        ${imgHtml}
-        <div class="q-item-actions">
-          <div class="upload-area">
-            <input type="file" id="file-${i}" accept="image/*">
-            <button class="btn-upload" onclick="uploadImage(${i})">Upload</button>
-          </div>
-          ${hasImage ? `<button class="btn-danger" onclick="deleteImage(${i})">Remove</button>` : ''}
-        </div>
-        <div class="upload-status" id="status-${i}"></div>
-      </div>
-    </div>`;
-  });
-
-  list.innerHTML = html || '<div style="text-align:center;padding:40px;color:var(--text-light)">No questions match your filter.</div>';
-}
-
-async function uploadImage(index) {
-  const fileInput = document.getElementById(`file-${index}`);
-  const statusEl = document.getElementById(`status-${index}`);
-
-  if (!fileInput.files.length) {
-    statusEl.textContent = 'Please select an image file';
-    statusEl.className = 'upload-status error';
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('image', fileInput.files[0]);
-  formData.append('testCode', currentTab);
-  formData.append('questionIndex', index);
-
-  statusEl.textContent = 'Uploading...';
-  statusEl.className = 'upload-status';
-
-  try {
-    const res = await fetch('/api/images', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData
-    });
-    const data = await res.json();
-    if (res.ok) {
-      statusEl.textContent = 'Image uploaded successfully!';
-      statusEl.className = 'upload-status success';
-      await loadImages();
-    } else {
-      statusEl.textContent = data.error || 'Upload failed';
-      statusEl.className = 'upload-status error';
-    }
-  } catch {
-    statusEl.textContent = 'Upload failed - connection error';
-    statusEl.className = 'upload-status error';
-  }
-}
-
-async function deleteImage(index) {
-  if (!confirm('Remove this image?')) return;
-
-  try {
-    const res = await fetch(`/api/images/${currentTab}/${index}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (res.ok) await loadImages();
-  } catch { alert('Delete failed'); }
-}
-</script>
-</body>
-</html>
+export type TestCode = 'code8' | 'code10' | 'code14'
